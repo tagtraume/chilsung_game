@@ -1,0 +1,53 @@
+<idoctype html>
+<head>
+	<title>탄산 톡톡톡!</title>
+	<style>
+		.bubble{
+			width:60px; height:400px; 
+			/* 1. 풍선 배경 파일지정을 스크립트에서 하기위해 일단 CSS에서 삭제 */
+			/* background:url('balloon_1.gif'); */
+			/* background-size:100% auto; */
+			background-repeat:no-repeat;
+			animation-timing-function: ease-out;
+		}
+
+		@keyframes bMove{
+			0%{ background-position: 0 300px; opacity:0;}
+			20%{opacity:1;}
+			80%{ opacity:1; }
+			100%{ background-position:0 0;opacity:0;}
+		}
+	</style>
+</head>
+<body>
+	<script>
+	setInterval(attachbubble,1500);
+
+	function attachbubble(){
+		var t = document.createElement("div");
+		t.setAttribute("class","bubble"); 
+		t.style.position = "absolute"; 
+		//1. 풍선의 배경 파일을 스크립트로 넣어주자 파일이름을 앞뒤로 나누고 사이에 랜덤값으로 1에서 4 사이의 값을 넣어주자
+		t.style.background = "url('bubble_" + randomBH(1,3) + ".png') no-repeat";
+		//2. 풍선의 이미지 사이즈 지정
+		t.style.backgroundSize = "100% auto";
+		t.style.top = randomBH(0,window.innerHeight) + "px";
+		t.style.left = randomBH(0,window.innerWidth) + "px";
+		t.addEventListener("animationend",remove);
+		document.body.appendChild(t);		
+	}
+	
+	//지워주기 함수(이건 그냥 복붙 )	
+	function remove(){
+		var t = event.target; //이벤트의 타겟을 t로 지정하고.
+		t.parentNode.removeChild(t); //그 엄마를 찾아서 자식중에 t를 지워라. 
+	}
+
+	//최소값과 최대값 사이의 임의의 숫자를 리턴하는 함수(복붙)
+	function randomBH(min, max) {
+  		min = Math.ceil(min);
+  		max = Math.floor(max);
+  		return Math.floor(Math.random() * (max - min + 1)) + min;
+	}
+	</script>
+</body>
