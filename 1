@@ -1,0 +1,91 @@
+<idoctype html>
+<head>
+	<title>탄산 톡톡톡!?</title>
+	<style>
+		.bubble{
+			width:60px; height:400px; 
+			background-repeat:no-repeat;
+			animation: bMove 3s ease-in;
+		}
+
+		@keyframes bMove{
+			0%{ background-position: 0 300px; opacity:0;}
+			20%{opacity:1;}
+			80%{ opacity:1; }
+			100%{ background-position:0 0;opacity:0;}
+		}
+	</style>
+</head>
+<div id="time" style="font-size: 2em"></div>
+<div id="displayMark" style="font-size: 2em">0</div>
+<body>
+<img src="background.png" alt="underwater" width="1440" height="2560">
+	<script>
+	var timeD = setInterval(checkTime,100);
+	setTimeout(result,30000);
+	var game = setInterval(attachbubble,500);
+
+	var a = 0;
+	var mark = 0;
+	function checkTime(){
+		a = a + 1;
+		console.log(a);
+		time.innerHTML = "칠성 풍선은 7점!"+ (299 - a) / 10 + "초 남았어요.";
+	}
+
+	function result(){
+		alert("게임이 끝났습니다. 당신의 점수는\n"+mark+"점입니다.");
+		clearInterval(game);
+		clearInterval(timeD);
+	}
+
+	function attachbubble(){
+		var t = document.createElement("div");
+		t.setAttribute("class","bubble"); 
+		t.style.position = "absolute"; 
+		
+		var color = randomBH(1,4);
+		t.style.background = "url('bubble_" + color + ".png') no-repeat";
+		t.style.backgroundSize = "100% auto";
+		t.style.top = randomBH(0,window.innerHeight - 0) + "px";
+		t.style.left = randomBH(0,window.innerWidth) + "px";
+		t.addEventListener("animationend",remove);
+		t.onclick = function(){
+			markUp(this, color);
+		}
+		document.body.appendChild(t);		
+	}
+		function markUp(t, color)
+	{
+		var markText = "";
+		if(color == 4){
+			mark += 7;
+			markText = "와우!" + mark+"점이 되었어요!";
+			displayMark.style.fontSize = "2em";
+			displayMark.style.color = "green";
+		}
+		else{
+			mark += 3;
+			markText = mark;
+			displayMark.style.fontSize = "2em";
+			displayMark.style.color = "black";	
+		}
+		displayMark.innerHTML = markText;
+		remove(t);
+	}
+
+
+	//지워주기 함수(이건 그냥 복붙 )	
+	function remove(){
+		var t = event.target; //이벤트의 타겟을 t로 지정하고.
+		t.parentNode.removeChild(t); //그 엄마를 찾아서 자식중에 t를 지워라. 
+	}
+
+	//최소값과 최대값 사이의 임의의 숫자를 리턴하는 함수(복붙)
+	function randomBH(min, max) {
+  		min = Math.ceil(min);
+  		max = Math.floor(max);
+  		return Math.floor(Math.random() * (max - min + 1)) + min;
+	}
+	</script>
+</body>
